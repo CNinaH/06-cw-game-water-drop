@@ -1,4 +1,4 @@
-  /********************
+/********************
      * 1. BASIC SET‑UP *
      ********************/
     const canvas = document.getElementById("c");
@@ -10,7 +10,57 @@
     let drops   = []; // active falling drops
     let score   = 0;
     let time    = 60; // seconds
-    let running = true; // toggled by pause button
+    let running = false; // start paused
+
+    // Title screen elements
+    const titleScreen = document.getElementById("titleScreen");
+    const startBtn = document.getElementById("startBtn");
+    const pauseBtns = document.getElementById("pauseBtns");
+    const resumeBtn = document.getElementById("resumeBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    // Show title screen at start
+    titleScreen.style.display = "flex";
+    document.getElementById("hud").style.visibility = "hidden";
+    startBtn.style.display = "inline-block";
+    pauseBtns.style.display = "none";
+
+    // Start button handler (first time or after game over)
+    startBtn.addEventListener("click", () => {
+      // Reset game state
+      drops = [];
+      score = 0;
+      time = 60;
+      running = true;
+      document.getElementById("score").textContent = score;
+      document.getElementById("time").textContent = time;
+      document.getElementById("pause").textContent = "Pause";
+      // Hide title screen, show HUD
+      titleScreen.style.display = "none";
+      document.getElementById("hud").style.visibility = "visible";
+      startBtn.style.display = "inline-block";
+      pauseBtns.style.display = "none";
+    });
+
+    // Resume button handler
+    resumeBtn.addEventListener("click", () => {
+      running = true;
+      titleScreen.style.display = "none";
+      document.getElementById("hud").style.visibility = "visible";
+    });
+
+    // Restart button handler (from pause)
+    restartBtn.addEventListener("click", () => {
+      drops = [];
+      score = 0;
+      time = 60;
+      running = true;
+      document.getElementById("score").textContent = score;
+      document.getElementById("time").textContent = time;
+      document.getElementById("pause").textContent = "Pause";
+      titleScreen.style.display = "none";
+      document.getElementById("hud").style.visibility = "visible";
+    });
 
     /********************************
      * 2. FUNCTION: CREATE A DROP   *
@@ -72,7 +122,14 @@
         document.getElementById("time").textContent = time;
         if (time === 0) {
           running = false;
-          alert("Time up! Your score: " + score);
+          setTimeout(() => {
+            alert("Time up! Your score: " + score);
+            // Show title screen again for replay
+            titleScreen.style.display = "flex";
+            document.getElementById("hud").style.visibility = "hidden";
+            startBtn.style.display = "inline-block";
+            pauseBtns.style.display = "none";
+          }, 100);
         }
       }
     }, 1000);
@@ -114,4 +171,11 @@
       if (time === 0) return; // cannot un‑pause after game ends
       running = !running;
       document.getElementById("pause").textContent = running ? "Pause" : "Play";
+      if (!running) {
+        // Show pause overlay with Resume/Restart
+        titleScreen.style.display = "flex";
+        document.getElementById("hud").style.visibility = "hidden";
+        startBtn.style.display = "none";
+        pauseBtns.style.display = "flex";
+      }
     });

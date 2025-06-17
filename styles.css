@@ -62,7 +62,7 @@ Fonts:
 
     #pause { cursor: pointer; user-select: none; }
 
-    #logo {
+    .logo {
       position: absolute;
       bottom: 8px;
       width: 100%;
@@ -75,4 +75,61 @@ Fonts:
       width: 100%;
       height: 100%;
       display: block;
+    }
+
+    #titleScreen {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100%; height: 100%;
+      background: rgba(255,255,255,0.97);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    #titleScreen h1 {
+      font-size: 2.2em;
+      color: #8BD1CB;
+      margin-bottom: 32px;
+      font-family: Avenir, Proxima Nova, sans-serif;
+    }
+
+    #startBtn {
+      font-size: 1.2em;
+      padding: 12px 36px;
+      background: #FFC907;
+      color: #003366;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #1a1a1a;
+      transition: background 0.2s;
+    }
+    #startBtn:hover {
+      background: #FFD84D;
+    }
+
+    #pauseBtns {
+      display: flex;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    #pauseBtns button {
+      font-size: 1.1em;
+      padding: 10px 28px;
+      background: #FFD84D;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #1a1a1a22;
+      transition: background 0.2s;
+    }
+    #pauseBtns button:hover {
+      background: #8BD1CB;
     }

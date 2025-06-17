@@ -3,12 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Drop Game</title>
+    <title>Pure Water</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div id="gameArea">
     <canvas id="c"></canvas>
+
+    <!-- Title Screen Overlay -->
+    <div id="titleScreen">
+      <h1>Pure Water</h1>
+      <button id="startBtn">Start</button>
+      <div id="pauseBtns" style="display:none;">
+        <button id="resumeBtn">Resume</button>
+        <button id="restartBtn">Restart</button>
+      </div>
+    </div>
 
     <!-- HUD -->
     <div id="hud">
@@ -17,7 +27,9 @@
       <div id="score" class="box">0</div>
     </div>
 
-    <div id="logo">Charity Water Logo Here</div>
+    <div class="logo">
+      <img src="img/water-can-transparent.png" alt="Water Can Logo">
+    </div>
   </div>
     
     <script src="script.js"></script>
