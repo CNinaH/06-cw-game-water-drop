@@ -7,18 +7,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="game-wrapper">
-        <h1 class="game-title">Water Drop</h1>
-        <p class="game-tagline">Catch the good drops, avoid the bad ones!</p>
-        <div class="score-panel">
-            <div class="score">Score: <span id="score">0</span></div>
-            <div class="timer">Time: <span id="time">30</span>s</div>
-            <button id="start-btn">Start Game</button>
-        </div>
-        
-        <div id="game-container">
-        </div>
+  <div id="gameArea">
+    <canvas id="c"></canvas>
+
+    <!-- HUD -->
+    <div id="hud">
+      <div id="pause" class="box">Pause</div>
+      <div id="time"  class="box">60</div>
+      <div id="score" class="box">0</div>
     </div>
+
+    <div id="logo">Charity Water Logo Here</div>
+  </div>
     
     <script src="script.js"></script>
 </body>

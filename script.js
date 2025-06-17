@@ -1,45 +1,117 @@
-// Variables to control game state
-let gameRunning = false; // Keeps track of whether game is active or not
-let dropMaker; // Will store our timer that creates drops regularly
+  /********************
+     * 1. BASIC SET‑UP *
+     ********************/
+    const canvas = document.getElementById("c");
+    const ctx     = canvas.getContext("2d");
+    canvas.width  = 360; // fixed size keeps math easy
+    canvas.height = 640;
 
-// Wait for button click to start the game
-document.getElementById("start-btn").addEventListener("click", startGame);
+    // game variables
+    let drops   = []; // active falling drops
+    let score   = 0;
+    let time    = 60; // seconds
+    let running = true; // toggled by pause button
 
-function startGame() {
-  // Prevent multiple games from running at once
-  if (gameRunning) return;
+    /********************************
+     * 2. FUNCTION: CREATE A DROP   *
+     ********************************/
+    function makeDrop() {
+      const good = Math.random() < 0.7; // 70 % chance good
+      drops.push({
+        x: Math.random() * (canvas.width - 40) + 20, // keep away from edges
+        y: -20,
+        r: 18,
+        good: good,
+        speed: 120, // pixels per second
+      });
+    }
 
-  gameRunning = true;
+    /********************************
+     * 3. FUNCTION: DRAW A DROP     *
+     ********************************/
+    function drawDrop(d) {
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+      ctx.fillStyle = d.good ? "#19b5ff" : "#2f6f79"; // light / dark blue
+      ctx.fill();
+    }
 
-  // Create new drops every second (1000 milliseconds)
-  dropMaker = setInterval(createDrop, 1000);
-}
+    /********************************
+     * 4. MAIN ANIMATION LOOP       *
+     ********************************/
+    let last = performance.now();
+    function loop(now) {
+      const dt = (now - last) / 1000; // seconds since last frame
+      last = now;
 
-function createDrop() {
-  // Create a new div element that will be our water drop
-  const drop = document.createElement("div");
-  drop.className = "water-drop";
+      if (running) {
+        // chance to spawn a new drop every ~0.7 s
+        if (Math.random() < dt / 0.7) makeDrop();
 
-  // Make drops different sizes for visual variety
-  const initialSize = 60;
-  const sizeMultiplier = Math.random() * 0.8 + 0.5;
-  const size = initialSize * sizeMultiplier;
-  drop.style.width = drop.style.height = `${size}px`;
+        // move drops downward
+        drops.forEach((d) => (d.y += d.speed * dt));
 
-  // Position the drop randomly across the game width
-  // Subtract 60 pixels to keep drops fully inside the container
-  const gameWidth = document.getElementById("game-container").offsetWidth;
-  const xPosition = Math.random() * (gameWidth - 60);
-  drop.style.left = xPosition + "px";
+        // remove drops once they leave the bottom
+        drops = drops.filter((d) => d.y - d.r < canvas.height);
+      }
 
-  // Make drops fall for 4 seconds
-  drop.style.animationDuration = "4s";
+      // draw background & all drops
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drops.forEach(drawDrop);
 
-  // Add the new drop to the game screen
-  document.getElementById("game-container").appendChild(drop);
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
 
-  // Remove drops that reach the bottom (weren't clicked)
-  drop.addEventListener("animationend", () => {
-    drop.remove(); // Clean up drops that weren't caught
-  });
-}
+    /********************************
+     * 5. COUNTDOWN TIMER           *
+     ********************************/
+    setInterval(() => {
+      if (running && time > 0) {
+        time--;
+        document.getElementById("time").textContent = time;
+        if (time === 0) {
+          running = false;
+          alert("Time up! Your score: " + score);
+        }
+      }
+    }, 1000);
+
+    /********************************
+     * 6. CLICK HANDLER             *
+     ********************************/
+    canvas.addEventListener("click", (e) => {
+      if (!running) return;
+
+      // translate click coords to canvas space
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // check drops from topmost to bottom
+      for (let i = drops.length - 1; i >= 0; i--) {
+        const d = drops[i];
+        const dx = x - d.x;
+        const dy = y - d.y;
+        if (dx * dx + dy * dy < d.r * d.r) {
+          // hit!
+          if (d.good) {
+            score++;
+          } else {
+            score = Math.max(0, score - 1);
+          }
+          document.getElementById("score").textContent = score;
+          drops.splice(i, 1); // remove that drop
+          break; // stop looking
+        }
+      }
+    });
+
+    /********************************
+     * 7. PAUSE BUTTON              *
+     ********************************/
+    document.getElementById("pause").addEventListener("click", () => {
+      if (time === 0) return; // cannot un‑pause after game ends
+      running = !running;
+      document.getElementById("pause").textContent = running ? "Pause" : "Play";
+    });
