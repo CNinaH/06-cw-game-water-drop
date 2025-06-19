@@ -18,118 +18,322 @@ Fonts:
 
 */
 
- body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: sans-serif;
-      background: #eee;
-    }
+body {
+  margin: 0;
+  height: 100vh;
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: sans-serif;
+  background: #eee;
+  box-sizing: border-box;
+}
 
-    /* game frame */
-    #gameArea {
-      position: relative;
-      width: 360px;
-      height: 640px;
-      background: #fff;
-      border: 3px solid #ffc907;
-      border-radius: 6px;
-      overflow: hidden; /* hide drops when they fall off */
-    }
+/* game frame */
+#gameArea {
+  position: relative;
+  width: 360px;
+  height: 640px;
+  max-width: 100vw;
+  max-height: 100vh;
+  background: #fff;
+  border: 3px solid #ffc907;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition: width 0.3s, height 0.3s;
+}
 
-    /* heads‑up display (pause / timer / score) */
-    #hud {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      right: 10px;
-      display: flex;
-      justify-content: space-between;
-    }
+/* heads‑up display (pause / timer / score) */
+#hud {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+  gap: 0;
+  width: 100%;
+  pointer-events: none; /* allow only children to be interactive */
+}
 
-    .box {
-      width: 70px;
-      height: 40px;
-      background: #f4f4f4;
-      border-radius: 4px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: 700;
-    }
+#pause, #score, #time {
+  pointer-events: auto;
+}
 
-    #pause { cursor: pointer; user-select: none; }
+#pause {
+  order: 1;
+  margin-left: 24px;
+}
 
-    .logo {
-      position: absolute;
-      bottom: 8px;
-      width: 100%;
-      text-align: center;
-      font-size: 14px;
-    }
+#time {
+  order: 2;
+  margin: 0 auto;
+}
 
-    /* canvas fills the whole frame */
-    canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
+#score {
+  order: 3;
+  margin-right: 24px;
+}
 
-    #titleScreen {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      width: 100%; height: 100%;
-      background: rgba(255,255,255,0.97);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
+.box {
+  width: 70px;
+  height: 40px;
+  background: #f4f4f4;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
 
-    #titleScreen h1 {
-      font-size: 2.2em;
-      color: #8BD1CB;
-      margin-bottom: 32px;
-      font-family: Avenir, Proxima Nova, sans-serif;
-    }
+#pause { cursor: pointer; user-select: none; }
 
-    #startBtn {
-      font-size: 1.2em;
-      padding: 12px 36px;
-      background: #FFC907;
-      color: #003366;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 2px 8px #1a1a1a;
-      transition: background 0.2s;
-    }
-    #startBtn:hover {
-      background: #FFD84D;
-    }
+.logo {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  top: auto;
+  right: auto;
+  transform: translateX(-50%);
+  width: auto;
+  text-align: center;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+}
 
-    #pauseBtns {
-      display: flex;
-      gap: 18px;
-      margin-top: 18px;
-    }
+.logo img {
+  max-width: 60px;
+  max-height: 60px;
+  height: auto;
+  width: auto;
+}
 
-    #pauseBtns button {
-      font-size: 1.1em;
-      padding: 10px 28px;
-      background: #FFD84D;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 2px 8px #1a1a1a22;
-      transition: background 0.2s;
-    }
-    #pauseBtns button:hover {
-      background: #8BD1CB;
-    }
+/* canvas fills the whole frame */
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#titleScreen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  background: rgba(255,255,255,0.97);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+}
+
+#titleScreen h1 {
+  font-size: 2.2em;
+  color: #8BD1CB;
+  margin-bottom: 32px;
+  font-family: Avenir, Proxima Nova, sans-serif;
+  text-align: center;
+  order: 1;
+}
+
+#startBtn, #pauseBtns {
+  order: 2;
+}
+
+#startBtn {
+  font-size: 1.2em;
+  padding: 12px 36px;
+  background: #FFC907;
+  color: #003366;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #1a1a1a;
+  transition: background 0.2s;
+}
+#startBtn:hover {
+  background: #8BD1CB;
+}
+
+#pauseBtns {
+  display: flex;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+#pauseBtns button {
+  font-size: 1.1em;
+  padding: 10px 28px;
+  background: #FFD84D;
+  color: #003366;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #1a1a1a;
+  transition: background 0.2s;
+}
+#pauseBtns button:hover {
+  background: #8BD1CB;
+}
+
+/* End screen styles */
+#endScreen {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  background: rgba(255,255,255,0.97);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  text-align: center;
+}
+
+#endScreen h1 {
+  color: #8BD1CB;
+  font-size: 2.2em;
+  margin-bottom: 24px;
+  font-family: Avenir, Proxima Nova, sans-serif;
+}
+
+#endScreen #endScore {
+  font-size: 2em;
+  margin-bottom: 32px;
+  color: #003366;
+}
+
+#endScreen #endRestart {
+  font-size: 1.2em;
+  padding: 12px 36px;
+  background: #FFC907;
+  color: #003366;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #1a1a1a;
+  transition: background 0.2s;
+}
+
+#endScreen #endRestart:hover {
+  background: #8BD1CB;
+}
+
+#confettiCanvas {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 101;
+}
+
+/* Portrait (vertical) layout for small screens */
+@media (max-width: 900px), (max-height: 700px) {
+  #gameArea {
+    width: 98vw;
+    height: 80vh;
+    min-width: 220px;
+    min-height: 320px;
+    max-width: 100vw;
+    max-height: 100vh;
+    flex-direction: column;
+  }
+  #hud {
+    flex-direction: row;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: auto;
+  }
+  .logo {
+    left: 50%;
+    bottom: 8px;
+    top: auto;
+    right: auto;
+    transform: translateX(-50%);
+  }
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+/* Landscape (horizontal) layout for large screens */
+@media (min-width: 901px) and (min-height: 701px) {
+  #gameArea {
+    width: 2000px;
+    height: 1000px;
+    max-width: 98vw;
+    max-height: 98vh;
+  }
+  #hud {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    top: 18px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    z-index: 2;
+    gap: 0;
+  }
+  #pause {
+    margin-left: 48px;
+  }
+  #score {
+    margin-right: 48px;
+  }
+  #time {
+    margin: 0 auto;
+  }
+  .box {
+    width: 90px;
+    height: 60px;
+    margin-bottom: 0;
+    font-size: 1.3em;
+  }
+  .logo {
+    left: 50%;
+    right: auto;
+    bottom: 24px;
+    top: auto;
+    transform: translateX(-50%);
+    justify-content: center;
+  }
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+    margin-left: 0;
+  }
+  #titleScreen {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  #titleScreen h1 {
+    font-size: 2.8em;
+    margin-right: 0;
+    margin-bottom: 40px;
+    margin-top: 0;
+    order: 1;
+  }
+  #startBtn, #pauseBtns {
+    order: 2;
+  }
+}
