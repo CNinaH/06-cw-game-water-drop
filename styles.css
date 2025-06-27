@@ -26,8 +26,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: sans-serif;
-  background: #eee;
+  font-family: "Proxima Nova", Avenir, sans-serif;
+  background: #003366;
   box-sizing: border-box;
 }
 
@@ -38,7 +38,7 @@ body {
   height: 640px;
   max-width: 100vw;
   max-height: 100vh;
-  background: #fff;
+  background: #f4f4f4;
   border: 3px solid #ffc907;
   border-radius: 6px;
   overflow: hidden;
@@ -76,11 +76,15 @@ body {
 #time {
   order: 2;
   margin: 0 auto;
+    color: #f4f4f4;
+  background-color: #003366;
 }
 
 #score {
   order: 3;
   margin-right: 24px;
+  color: #f4f4f4;
+  background-color: #003366;
 }
 
 .box {
@@ -94,7 +98,11 @@ body {
   font-weight: 700;
 }
 
-#pause { cursor: pointer; user-select: none; }
+#pause { 
+  color: #f4f4f4;
+  background-color: #003366;
+  user-select: none;
+}
 
 .logo {
   position: absolute;
@@ -130,20 +138,19 @@ canvas {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   width: 100%; height: 100%;
-  background: rgba(255,255,255,0.97);
+  background: #f4f4f4;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  z-index: 10;
 }
 
 #titleScreen h1 {
-  font-size: 2.2em;
-  color: #8BD1CB;
+  font-size: 5em;
+  color: #77a8bb;
   margin-bottom: 32px;
-  font-family: Avenir, Proxima Nova, sans-serif;
+  font-family: "Proxima Nova", Avenir, sans-serif;
   text-align: center;
   order: 1;
 }
@@ -160,12 +167,11 @@ canvas {
   border: none;
   border-radius: 6px;
   font-weight: bold;
-  cursor: pointer;
   box-shadow: 0 2px 8px #1a1a1a;
   transition: background 0.2s;
 }
 #startBtn:hover {
-  background: #8BD1CB;
+  background: #77a8bb;
 }
 
 #pauseBtns {
@@ -177,17 +183,36 @@ canvas {
 #pauseBtns button {
   font-size: 1.1em;
   padding: 10px 28px;
-  background: #FFD84D;
+  background: #FFC907;
   color: #003366;
   border: none;
   border-radius: 6px;
   font-weight: bold;
-  cursor: pointer;
   box-shadow: 0 2px 8px #1a1a1a;
   transition: background 0.2s;
 }
 #pauseBtns button:hover {
-  background: #8BD1CB;
+  background: #77a8bb;
+}
+
+/* Difficulty selector styles */
+#difficultySelect {
+  font-size: 1.2em;
+  margin-top: 20px;
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: 1px solid #77a8bb;
+  background: #FFC907;
+  color: #003366;
+  font-weight: bold;
+  transition: border 0.2s;
+  box-shadow: 0 2px 8px #1a1a1a;
+  transition: background 0.2s;
+  order: 3;
+}
+#difficultySelect:focus {
+  border: 2px solid #FFC907;
+  background: #f4f4f4
 }
 
 /* End screen styles */
@@ -195,7 +220,7 @@ canvas {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   width: 100%; height: 100%;
-  background: rgba(255,255,255,0.97);
+  background: #f4f4f4;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -205,10 +230,10 @@ canvas {
 }
 
 #endScreen h1 {
-  color: #8BD1CB;
+  color: #77a8bb;
   font-size: 2.2em;
   margin-bottom: 24px;
-  font-family: Avenir, Proxima Nova, sans-serif;
+  font-family: "Proxima Nova", Avenir, sans-serif;
 }
 
 #endScreen #endScore {
@@ -225,7 +250,6 @@ canvas {
   border: none;
   border-radius: 6px;
   font-weight: bold;
-  cursor: pointer;
   box-shadow: 0 2px 8px #1a1a1a;
   transition: background 0.2s;
 }
@@ -239,6 +263,39 @@ canvas {
   top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none;
   z-index: 101;
+}
+
+/* Charity link styles - moved outside game area, fixed to bottom of page */
+.charity-link {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: auto;
+  min-width: 180px;
+  text-align: center;
+  margin-bottom: 12px;
+  z-index: 9999;
+  font-size: 1em;
+  font-family: "Proxima Nova", Avenir, sans-serif;
+  pointer-events: auto;
+}
+
+.charity-link a {
+  color: #77a8bb;
+  text-decoration: none;
+  font-weight: bold;
+  background: #f4f4f4;
+  padding: 6px 18px;
+  border-radius: 6px;
+  box-shadow: 0 1px 4px #1a1a1a;
+  transition: background 0.2s, color 0.2s;
+  display: inline-block;
+}
+
+.charity-link a:hover {
+  background: #FFC907;
+  color: #f4f4f4;
 }
 
 /* Portrait (vertical) layout for small screens */

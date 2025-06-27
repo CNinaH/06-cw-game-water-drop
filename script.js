@@ -29,6 +29,17 @@
     const resumeBtn = document.getElementById("resumeBtn");
     const restartBtn = document.getElementById("restartBtn");
 
+    // Difficulty selector
+    const difficultySelect = document.getElementById("difficultySelect");
+    let difficulty = "Normal"; // Default
+
+    if (difficultySelect) {
+      difficultySelect.value = "Normal";
+      difficultySelect.addEventListener("change", (e) => {
+        difficulty = e.target.value;
+      });
+    }
+
     // Show title screen at start
     titleScreen.style.display = "flex";
     document.getElementById("hud").style.visibility = "hidden";
@@ -45,6 +56,8 @@
       document.getElementById("score").textContent = score;
       document.getElementById("time").textContent = time;
       document.getElementById("pause").textContent = "Pause";
+      // Set difficulty from selector
+      if (difficultySelect) difficulty = difficultySelect.value;
       // Hide title screen, show HUD
       titleScreen.style.display = "none";
       document.getElementById("hud").style.visibility = "visible";
@@ -68,6 +81,8 @@
       document.getElementById("score").textContent = score;
       document.getElementById("time").textContent = time;
       document.getElementById("pause").textContent = "Pause";
+      // Keep last selected difficulty
+      if (difficultySelect) difficulty = difficultySelect.value;
       titleScreen.style.display = "none";
       document.getElementById("hud").style.visibility = "visible";
     });
@@ -86,12 +101,17 @@
         maxX = canvas.width - 40;
       }
 
+      // Difficulty-based speed
+      let baseSpeed = 120;
+      if (difficulty === "Easy") baseSpeed = 90;
+      else if (difficulty === "Hard") baseSpeed = 170;
+
       drops.push({
         x: Math.random() * (maxX - minX) + minX,
         y: -28,
         r: 25,
         good: good,
-        speed: 120,
+        speed: baseSpeed,
       });
     }
 
@@ -147,8 +167,12 @@
       last = now;
 
       if (running) {
-        // chance to spawn a new drop every ~0.7 s
-        if (Math.random() < dt / 0.7) makeDrop();
+        // Difficulty-based spawn rate
+        let spawnRate = 0.7;
+        if (difficulty === "Easy") spawnRate = 1.1;
+        else if (difficulty === "Hard") spawnRate = 0.45;
+
+        if (Math.random() < dt / spawnRate) makeDrop();
 
         // move drops downward
         drops.forEach((d) => (d.y += d.speed * dt));
@@ -213,6 +237,8 @@
           titleScreen.style.display = "none";
           confettiActive = false;
           confettiParticles = [];
+          // Keep last selected difficulty
+          if (difficultySelect) difficulty = difficultySelect.value;
         });
       }
     }
